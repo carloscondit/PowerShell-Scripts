@@ -21,14 +21,14 @@ param (
         $script:output = "$path\FIAS_$date`_$i.zip"
         $i++
     } until (!(Test-Path $output))
-    Write-Verbose "Полный путь к скачиваемому файлу: $output."    
+    Write-Verbose "Полный путь к скачиваемому файлу: ""$output""."    
     # Запускаем метод объекта .Net для скачивания файла.
     Write-Verbose "Запускаем скачивание файла."
     $download.DownloadFile($url, $output)
 }
 
 # Создаем функция для проверки скачанного архива.
-$7z = 'C:\Program Files\7-Zip\7z.exe'
+$7z = "$env:ProgramFiles\7-Zip\7z.exe"
 function Test-Archive {
     Write-Verbose "Запускаем проверку скачанного архива с помощью 7zip."
     & $7z t $output -r | Out-Null
@@ -36,9 +36,9 @@ function Test-Archive {
 
 # Проверяем наличие каталога, в который будет скачиваться файл и
 # при необходимости создаем его. Если не удается, то прерываем работу скрипта.
-Write-Verbose "Проверяем наличие каталога $path."
+Write-Verbose "Проверяем наличие каталога ""$path""."
 if (!(Test-Path $path)) {
-    Write-Verbose "Каталога "$path" не существует. Создаем его."
+    Write-Verbose "Каталога ""$path"" не существует. Создаем его."
     New-Item -Path $path -ItemType Directory -ErrorAction Stop | Out-Null
 }
 
@@ -58,7 +58,7 @@ else {
 
 # Опциоально добавляем в объект .Net свойтво User-Agent.
 if ($UserAgent) {
-    Write-Verbose "Добавляем заголовок использования User-Agent со значением $UserAgent."
+    Write-Verbose "Добавляем заголовок использования User-Agent со значением ""$UserAgent""."
     $download.Headers['User-Agent'] = [Microsoft.PowerShell.Commands.PSUserAgent]::$UserAgent
 }
 
