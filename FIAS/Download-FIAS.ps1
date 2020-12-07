@@ -4,7 +4,7 @@ param (
     [ValidateSet('InternetExplorer', 'FireFox', 'Chrome', 'Opera', 'Safari')]
     [String]$UserAgent,
     [String]$Path = 'C:\TMP',
-    [switch]$UseProxy = $false
+    [switch]$NoProxy = $false
     )
     
     Set-StrictMode -Version 2
@@ -47,12 +47,12 @@ $download = New-Object Net.WebClient
 
 # Если необходимо, то НЕ стираем в объекте .Net значение прокси сервера,
 # и тогда включаем авторизацию с текущим логином и паролем.
-if (!$UseProxy) {
+if ($NoProxy) {
     Write-Verbose "Отключаем использование прокси."
     $download.Proxy = $null
 }
 else {
-    Write-Verbose "Остаеляем прокси с указанием учетных данных текущего пользователя."
+    Write-Verbose "Добавляем учетные данные текущего пользователя в случае если используется прокси."
     $download.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 }
 
