@@ -31,7 +31,7 @@ param (
 $7z = "$env:ProgramFiles\7-Zip\7z.exe"
 function Test-Archive {
     Write-Verbose "Запускаем проверку скачанного архива с помощью 7zip."
-    & $7z t $output -r | Out-Null
+    & $7z t $output -r -bse0 -bso0
 }
 
 # Проверяем наличие каталога, в который будет скачиваться файл и
